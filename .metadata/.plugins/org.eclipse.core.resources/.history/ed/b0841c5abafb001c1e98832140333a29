@@ -1,0 +1,29 @@
+package Seção1_Selenium_Web_Driver;
+
+import org.openqa.selenium.WebDriver;
+
+public class CampoTreinamentoPage {
+	private DSL dsl;	
+
+    public CampoTreinamentoPage(WebDriver driver) {
+    	  dsl =new DSL(driver);
+    }
+	
+	public void setNome(String nome) {
+		dsl.escreva("elemeentosForm:nome", nome);
+	}
+	public void setsobreNome(String sobrenome) {
+		dsl.escreva("elemeentosForm:sobrenome", sobrenome);
+	}
+	
+	public void setSexoMasculino() {
+		 dsl.clicarRadio("elementosForm:sexo:0");
+	}
+	public void setComidaVegetariana() {
+		 dsl.clicarRadio("elementosForm:comidaFavorita:3");
+	}
+	public void setEscolaridade(String valor) {
+		dsl.escreva("elemeentosForm:escolaridade", valor);
+	}
+	
+}

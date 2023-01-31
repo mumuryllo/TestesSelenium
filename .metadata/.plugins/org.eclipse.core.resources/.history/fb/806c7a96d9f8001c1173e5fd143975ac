@@ -1,0 +1,72 @@
+package Seção1_Selenium_Web_Driver;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Before;
+import org.junit.Test;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.firefox.FirefoxDriver;
+
+public class TesteAlerts {
+
+private WebDriver driver;
+	
+	@Before
+	// Junit antes de cada metodo execute o que está aqui
+	public void incializar() {
+		  driver = new FirefoxDriver();
+		  driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+	}
+	
+	@After
+	// Junit depois de cada metodo execute o que está aqui
+	// Mesmo que o método falhe o After contnuará executando o que voce propos a fazer
+	public void finalizar() {
+		   driver.quit(); 
+	}
+	
+	
+	@Test
+	public void InteragirAlertSimples() {
+	 driver.findElement(By.id("alert")).click();
+	 Alert alert = driver.switchTo().alert();
+	 String texto = alert.getText();
+     Assert.assertEquals("Alert Simples", texto);
+     // o alert tem que fechar e ai sim executamos a função de escrever
+     alert.accept();
+	 driver.findElement(By.id("elementosForm:nome")).sendKeys(texto);
+	}
+	
+	@Test
+	public void InteragirAlertConfirm() {
+	 driver.findElement(By.id("confirm")).click();
+	 Alert alert = driver.switchTo().alert();
+     Assert.assertEquals("Confirm Simples", alert.getText());
+     alert.accept();
+     Assert.assertEquals("Confirmado", alert.getText());
+     alert.accept();
+     
+     driver.findElement(By.id("confirm")).click();
+	 alert = driver.switchTo().alert();
+     Assert.assertEquals("Confirm Simples", alert.getText());
+     alert.dismiss();
+     Assert.assertEquals("Negado", alert.getText());
+     alert.dismiss();
+	}
+	
+	@Test
+	public void InteragirAlertPrompt() {
+	 driver.findElement(By.id("prompt")).click();
+	 Alert alert = driver.switchTo().alert();
+     Assert.assertEquals("Digite um numero", alert.getText());
+     alert.sendKeys("12");
+     alert.accept();
+     Assert.assertEquals("Era 12?", alert.getText());
+     alert.accept();
+     Assert.assertEquals(":D", alert.getText());  
+     alert.accept();
+	}
+	
+}

@@ -1,0 +1,113 @@
+package Seção1_Selenium_Web_Driver;
+
+import java.util.List;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.Select;
+
+public class CadastroSucesso {
+	
+	@Test
+	public void testeCadastro() {
+		 WebDriver driver = new FirefoxDriver();
+		 driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		 driver.findElement(By.id("elementosForm:nome")).sendKeys("Muryllo");
+	     Assert.assertEquals("Muryllo", driver.findElement(By.id("elementosForm:nome")).getAttribute("value"));
+	     driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Soares");
+	     Assert.assertEquals("Soares", driver.findElement(By.id("elementosForm:sobrenome")).getAttribute("value"));
+	     driver.findElement(By.id("elementosForm:sexo:0")).click();
+	     Assert.assertTrue(driver.findElement(By.id("elementosForm:sexo:0")).isSelected());
+	     driver.findElement(By.id("elementosForm:comidaFavorita:3")).click();
+	     Assert.assertTrue(driver.findElement(By.id("elementosForm:comidaFavorita:3")).isSelected());
+	     WebElement element = driver.findElement(By.id("elementosForm:escolaridade"));
+	     Select combo = new Select(element);
+	     combo.selectByVisibleText("Superior");
+	     Assert.assertEquals("Superior", combo.getFirstSelectedOption().getText());
+	     WebElement elemento = driver.findElement(By.id("elementosForm:esportes"));
+	     Select combos = new Select(elemento);
+	     driver.findElement(By.id("elementosForm:esportes"));
+	     combos.selectByVisibleText("Natacao");
+	     combos.selectByVisibleText("Corrida");
+	     List<WebElement> AllSelectedoptions = combos.getAllSelectedOptions();
+	     Assert.assertEquals(2, AllSelectedoptions.size());
+		 driver.findElement(By.id("elementosForm:cadastrar")).click();
+		 Assert.assertTrue( driver.findElement(By.id("resultado")).getText().startsWith("Cadastrado!"));
+		 Assert.assertTrue( driver.findElement(By.id("descNome")).getText().endsWith("Muryllo"));
+		 Assert.assertEquals("Sobrenome: Soares", driver.findElement(By.id("descSobrenome")).getText());
+		 Assert.assertEquals("Sexo: Masculino", driver.findElement(By.id("descSexo")).getText());
+		 Assert.assertEquals("Comida: Vegetariano", driver.findElement(By.id("descComida")).getText());
+		 Assert.assertEquals("Escolaridade: superior", driver.findElement(By.id("descEscolaridade")).getText());
+		 Assert.assertEquals("Esportes: Natacao Corrida", driver.findElement(By.id("descEsportes")).getText());
+		 driver.quit();
+		}
+	
+	@Test
+	public void ValidarNome() {
+		 WebDriver driver = new FirefoxDriver();
+		 driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		 driver.findElement(By.id("elementosForm:cadastrar")).click();
+		 Alert alert= driver.switchTo().alert();
+	     Assert.assertEquals("Nome eh obrigatorio", alert.getText());
+		 driver.quit();
+		}
+	
+	@Test
+	public void ValidarSobreNome() {
+		 WebDriver driver = new FirefoxDriver();
+		 driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		 driver.findElement(By.id("elementosForm:nome")).sendKeys("Muryllo");
+		 driver.findElement(By.id("elementosForm:cadastrar")).click();
+		 Alert alert= driver.switchTo().alert();
+	     Assert.assertEquals("Sobrenome eh obrigatorio", alert.getText());
+		 driver.quit();
+		}
+	@Test
+	public void ValidarSexo() {
+		 WebDriver driver = new FirefoxDriver();
+		 driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		 driver.findElement(By.id("elementosForm:nome")).sendKeys("Muryllo");
+	     driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Soares");
+		 driver.findElement(By.id("elementosForm:cadastrar")).click();
+		 Alert alert= driver.switchTo().alert();
+	     Assert.assertEquals("Sexo eh obrigatorio", alert.getText());
+		 driver.quit();
+		}
+	@Test
+	public void ValidarComida() {
+		 WebDriver driver = new FirefoxDriver();
+		 driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		 driver.findElement(By.id("elementosForm:nome")).sendKeys("Muryllo");
+	     driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Soares");
+	     driver.findElement(By.id("elementosForm:sexo:0")).click();
+	     driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
+	     driver.findElement(By.id("elementosForm:comidaFavorita:3")).click();
+		 driver.findElement(By.id("elementosForm:cadastrar")).click();
+		 Alert alert= driver.switchTo().alert();
+	     Assert.assertEquals("Voce faz esporte ou nao?", alert.getText());
+		 driver.quit();
+		}
+	@Test
+	public void ValidarEsporte() {
+		 WebDriver driver = new FirefoxDriver();
+		 driver.get("file:///" + System.getProperty("user.dir") + "/src/main/resources/componentes.html");
+		 driver.findElement(By.id("elementosForm:nome")).sendKeys("Muryllo");
+	     driver.findElement(By.id("elementosForm:sobrenome")).sendKeys("Soares");
+	     driver.findElement(By.id("elementosForm:sexo:0")).click();
+	     driver.findElement(By.id("elementosForm:comidaFavorita:0")).click();
+	     Select combo = new Select(driver.findElement(By.id("elementosForm:esportes")));
+	     combo.selectByVisibleText("Karate");
+	     combo.selectByVisibleText("O que eh esporte?");
+		 driver.findElement(By.id("elementosForm:cadastrar")).click();
+		 Alert alert= driver.switchTo().alert();
+	     Assert.assertEquals("Tem certeza que voce eh vegetariano?", alert.getText());
+		 driver.quit();
+		}
+	
+	
+}
